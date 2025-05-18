@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import BetList from './components/BetList';
 import BetHistory from './components/BetHistory';
 import Balance from './components/Balance';
+import FootballLanding from './components/FootballLanding';
 import './App.css';
+import './components/FootballLanding.css';
 
 function App() {
   const [balance, setBalance] = useState(3433);
-  const [activePage, setActivePage] = useState('home');
+  const [activePage, setActivePage] = useState('landing');
   const [showConfetti, setShowConfetti] = useState(false);
   const [bets, setBets] = useState([
     { id: 1, title: 'Red Sox vs Yankees', odd: 1.5, sport: 'Baseball' },
@@ -63,6 +65,8 @@ function App() {
 
   const renderContent = () => {
     switch(activePage) {
+      case 'landing':
+        return <FootballLanding onNavigate={setActivePage} />;
       case 'home':
         return (
           <main className="app-content">
@@ -122,42 +126,49 @@ function App() {
         ))}
       </div>}
       
-      <header className="App-header">
-        <div className="logo-container">
-          <h1>BET KING</h1>
-          <span className="crown-icon">👑</span>
-        </div>
-        <nav className="main-nav">
-          <ul>
-            <li className={activePage === 'home' ? 'active' : ''}>
-              <button onClick={() => setActivePage('home')}>Home</button>
-            </li>
-            <li className={activePage === 'sports' ? 'active' : ''}>
-              <button onClick={() => setActivePage('sports')}>Sports</button>
-            </li>
-            <li className={activePage === 'profile' ? 'active' : ''}>
-              <button onClick={() => setActivePage('profile')}>Profile</button>
-            </li>
-          </ul>
-        </nav>
-      </header>
+      {activePage !== 'landing' && (
+        <header className="App-header">
+          <div className="logo-container">
+            <h1>VARSITY</h1>
+            <span className="crown-icon">⚡</span>
+          </div>
+          <nav className="main-nav">
+            <ul>
+              <li className={activePage === 'landing' ? 'active' : ''}>
+                <button onClick={() => setActivePage('landing')}>Home</button>
+              </li>
+              <li className={activePage === 'home' ? 'active' : ''}>
+                <button onClick={() => setActivePage('home')}>Betting</button>
+              </li>
+              <li className={activePage === 'sports' ? 'active' : ''}>
+                <button onClick={() => setActivePage('sports')}>Sports</button>
+              </li>
+              <li className={activePage === 'profile' ? 'active' : ''}>
+                <button onClick={() => setActivePage('profile')}>Profile</button>
+              </li>
+            </ul>
+          </nav>
+        </header>
+      )}
       
       {renderContent()}
       
-      <div className="stats-banner">
-        <div className="stat-item">
-          <span className="stat-value">11,443</span>
-          <span className="stat-label">Active Bets</span>
+      {activePage !== 'landing' && (
+        <div className="stats-banner">
+          <div className="stat-item">
+            <span className="stat-value">11,443</span>
+            <span className="stat-label">Active Bets</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">$3,223.55</span>
+            <span className="stat-label">Total Profit</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">38%</span>
+            <span className="stat-label">Win Rate</span>
+          </div>
         </div>
-        <div className="stat-item">
-          <span className="stat-value">$3,223.55</span>
-          <span className="stat-label">Total Profit</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">38%</span>
-          <span className="stat-label">Win Rate</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
